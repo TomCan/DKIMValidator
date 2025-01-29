@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PHPMailer\DKIMValidator;
+namespace TomCan\DKIMValidator;
 
 class Validator extends DKIM
 {
