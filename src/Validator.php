@@ -71,6 +71,7 @@ class Validator extends DKIM
                     $output[$signatureIndex][] = [
                         'status' => 'PERMFAIL',
                         'reason' => "Signature missing required tag: $tagIndex",
+                        'tags' => $dkimTags,
                     ];
                 }
             }
@@ -80,6 +81,7 @@ class Validator extends DKIM
                 $output[$signatureIndex][] = [
                     'status' => 'PERMFAIL',
                     'reason' => 'Incompatible DKIM version: ' . $dkimTags['v'],
+                    'tags' => $dkimTags,
                 ];
             }
 
@@ -89,12 +91,14 @@ class Validator extends DKIM
                 $output[$signatureIndex][] = [
                     'status' => 'PERMFAIL',
                     'reason' => 'Unknown header canonicalization algorithm: ' . $headerCA,
+                    'tags' => $dkimTags,
                 ];
             }
             if ($bodyCA !== 'relaxed' && $bodyCA !== 'simple') {
                 $output[$signatureIndex][] = [
                     'status' => 'PERMFAIL',
                     'reason' => 'Unknown body canonicalization algorithm: ' . $bodyCA,
+                    'tags' => $dkimTags,
                 ];
             }
 
@@ -110,6 +114,7 @@ class Validator extends DKIM
                     $output[$signatureIndex][] = [
                         'status' => 'PERMFAIL',
                         'reason' => 'Body too short: ' . $dkimTags['l'] . '/' . $bodyLength,
+                        'tags' => $dkimTags,
                     ];
                 }
             }
@@ -121,6 +126,7 @@ class Validator extends DKIM
                 $output[$signatureIndex][] = [
                     'status' => 'PERMFAIL',
                     'reason' => 'Agent or user identifier does not match domain: ' . $dkimTags['i'],
+                    'tags' => $dkimTags,
                 ];
             }
 
@@ -130,6 +136,7 @@ class Validator extends DKIM
                 $output[$signatureIndex][] = [
                     'status' => 'PERMFAIL',
                     'reason' => 'From header not included in signed header list: ' . $dkimTags['h'],
+                    'tags' => $dkimTags,
                 ];
             }
 
@@ -139,12 +146,14 @@ class Validator extends DKIM
                     $output[$signatureIndex][] = [
                         'status' => 'PERMFAIL',
                         'reason' => 'Signature has expired.',
+                        'tags' => $dkimTags,
                     ];
                 }
                 if ((int) $dkimTags['x'] < (int) $dkimTags['t']) {
                     $output[$signatureIndex][] = [
                         'status' => 'PERMFAIL',
                         'reason' => 'Expiry time is before signature time.',
+                        'tags' => $dkimTags,
                     ];
                 }
             }
@@ -168,6 +177,7 @@ class Validator extends DKIM
                     $output[$signatureIndex][] = [
                         'status' => 'TEMPFAIL',
                         'reason' => 'Public key not found in DNS',
+                        'tags' => $dkimTags,
                     ];
                     continue;
                 }
@@ -176,6 +186,7 @@ class Validator extends DKIM
                 $output[$signatureIndex][] = [
                     'status' => 'PERMFAIL',
                     'reason' => 'Public key unavailable (unknown q= query format)',
+                    'tags' => $dkimTags,
                 ];
                 continue;
             }
@@ -206,6 +217,7 @@ class Validator extends DKIM
                 $output[$signatureIndex][] = [
                     'status' => 'PERMFAIL',
                     'reason' => 'Computed body hash does not match signature body hash',
+                    'tags' => $dkimTags,
                 ];
             }
 
@@ -218,6 +230,7 @@ class Validator extends DKIM
                         'status' => 'PERMFAIL',
                         'reason' => 'Public key version does not match signature' .
                             " version ({$dkimTags['d']} key #$keyIndex)",
+                        'tags' => $dkimTags,
                     ];
                 }
 
@@ -227,6 +240,7 @@ class Validator extends DKIM
                         'status' => 'PERMFAIL',
                         'reason' => 'Public key hash algorithm does not match signature' .
                             " hash algorithm ({$dkimTags['d']} key #$keyIndex)",
+                        'tags' => $dkimTags,
                     ];
                 }
 
@@ -236,6 +250,7 @@ class Validator extends DKIM
                         'status' => 'PERMFAIL',
                         'reason' => 'Public key type does not match signature' .
                             " key type ({$dkimTags['d']} key #$keyIndex)",
+                        'tags' => $dkimTags,
                     ];
                 }
 
@@ -245,6 +260,7 @@ class Validator extends DKIM
                         'status' => 'PERMFAIL',
                         'reason' => 'Public key service type does not permit email usage' .
                             " ({$dkimTags['d']} key #$keyIndex)" . $publicKey['s'],
+                        'tags' => $dkimTags,
                     ];
                 }
 
@@ -256,6 +272,7 @@ class Validator extends DKIM
                         'status' => 'PERMFAIL',
                         'reason' => "Signature algorithm $hash is not available" .
                             " for openssl_verify(), key #$keyIndex)",
+                        'tags' => $dkimTags,
                     ];
                     continue;
                 }
@@ -272,11 +289,13 @@ class Validator extends DKIM
                         'status' => 'PERMFAIL',
                         'reason' => 'DKIM signature did not verify ' .
                             "({$dkimTags['d']}/{$dkimTags['s']} key #$keyIndex)",
+                        'tags' => $dkimTags,
                     ];
                 } else {
                     $output[$signatureIndex][] = [
                         'status' => 'SUCCESS',
                         'reason' => 'DKIM signature verified successfully!',
+                        'tags' => $dkimTags,
                     ];
                 }
             }
