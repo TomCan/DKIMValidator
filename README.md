@@ -2,19 +2,17 @@
 
 A straightforward validation class for checking DKIM signatures and header settings. Requires PHP 7.2 or later.
 
-Looking to *send* DKIM-signed email? Check out [PHPMailer](https://github.com/PHPMailer/PHPMailer)!
-
 ## Installation
 
 ```
-composer require phpmailer/dkimvalidator
+composer require tomcan/dkimvalidator
 ```
 
 ## Usage
 
 ```php
-use PHPMailer\DKIMValidator\Validator;
-use PHPMailer\DKIMValidator\DKIMException;
+use TomCan\DKIMValidator\Validator;
+use TomCan\DKIMValidator\DKIMException;
 require 'vendor/autoload.php';
 //Put a whole raw email message in here
 //Load the message directly from disk -
@@ -40,3 +38,5 @@ try {
   * Restructuring
   * Cleanup for PSR-12 and PHP 7.2
   * Various bug fixes and new features.
+* Forked into [tomcan/dkimvalidator](https://github.com/PHPMailer/DKIMValidator) by Tom Cannaerts (TomCan) in Januari 2025:
+  * Return more details in the result

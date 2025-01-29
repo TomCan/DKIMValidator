@@ -1,5 +1,5 @@
 {
-  "name": "phpmailer/dkimvalidator",
+  "name": "tomcan/dkimvalidator",
   "description": "A DKIM signature validator in PHP.",
   "license": "MIT",
   "authors": [
@@ -14,6 +14,10 @@
     {
       "name": "Marcus Bointon",
       "email": "phpmailer@synchromedia.co.uk"
+    },
+    {
+      "name": "Tom Cannaerts",
+      "email": "mot@tom.be"
     }
   ],
   "minimum-stability": "dev",
