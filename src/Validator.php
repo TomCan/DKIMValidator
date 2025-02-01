@@ -70,7 +70,7 @@ class Validator extends DKIM
                 if (! array_key_exists($tagIndex, $dkimTags)) {
                     $output[$signatureIndex][] = [
                         'status' => 'PERMFAIL',
-                        'substatus' => 'TAG_MISSING_'.strtoupper($tagIndex),
+                        'substatus' => 'TAG_MISSING',
                         'reason' => "Signature missing required tag: $tagIndex",
                         'tags' => $dkimTags,
                     ];
@@ -117,7 +117,7 @@ class Validator extends DKIM
                 if ((int) $dkimTags['l'] > $bodyLength) {
                     $output[$signatureIndex][] = [
                         'status' => 'PERMFAIL',
-                        'substatus' => 'BODY_TOO_SHORT',
+                        'substatus' => 'BODY_LENGTH_MISMATCH',
                         'reason' => 'Body too short: ' . $dkimTags['l'] . '/' . $bodyLength,
                         'tags' => $dkimTags,
                     ];
